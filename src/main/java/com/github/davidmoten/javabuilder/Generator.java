@@ -108,7 +108,7 @@ public class Generator {
 			boolean firstTime = true;
 			for (Definition def : defs) {
 				if (!firstTime)
-					out.print(",");
+					out.print(", ");
 				out.print(def.type + sp + def.name);
 				firstTime = false;
 			}
@@ -169,7 +169,7 @@ public class Generator {
 		boolean firstTime = true;
 		for (Definition def : defs) {
 			if (!firstTime)
-				out.print(",");
+				out.print(", ");
 			out.print(def.name);
 			firstTime = false;
 		}
