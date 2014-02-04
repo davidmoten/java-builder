@@ -33,4 +33,11 @@ public class GeneratorTest {
 		assertEquals("thing", def.get().name);
 		assertEquals("Thing<T, R>", def.get().type);
 	}
+
+	@Test
+	public void testParseClassName() {
+
+		assertEquals("Fred",
+				Generator.parseClassName("public static class Fred {").get());
+	}
 }

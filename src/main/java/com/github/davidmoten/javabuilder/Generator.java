@@ -20,6 +20,29 @@ import com.google.common.io.CharStreams;
 
 public class Generator {
 
+	public String generate(InputStream is) {
+		try {
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			PrintStream out = new PrintStream(bytes);
+			List<String> lines = CharStreams
+					.readLines(new InputStreamReader(is));
+
+			String className = FluentIterable.from(lines)
+					.transform(toClassDefinition)
+					.filter(Generator.isPresent(String.class))
+					.transform(get(String.class)).first().or("ClassName");
+
+			ImmutableList<Definition> definitions = FluentIterable.from(lines)
+					.filter(nonEmptyLines).transform(toDefinition)
+					.filter(isPresent(Definition.class))
+					.transform(get(Definition.class)).toList();
+			writeClass(out, className, definitions);
+			return bytes.toString();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private final static List<String> reservedWords = Arrays.asList("private",
 			"protected", "final", "public", "protected");
 
@@ -31,13 +54,35 @@ public class Generator {
 		}
 	};
 
-	private final static Predicate<Optional<Definition>> isPresent = new Predicate<Optional<Definition>>() {
+	private final static Function<String, Optional<String>> toClassDefinition = new Function<String, Optional<String>>() {
 
 		@Override
-		public boolean apply(Optional<Definition> d) {
-			return d.isPresent();
+		public Optional<String> apply(String line) {
+			return parseClassName(line);
 		}
+
 	};
+
+	@VisibleForTesting
+	static Optional<String> parseClassName(String line) {
+		Pattern pattern = Pattern
+				.compile("^.*\\bclass\\s+\\b(\\w+)\\b\\s*\\{.*$");
+		Matcher matcher = pattern.matcher(line);
+		if (matcher.matches())
+			return Optional.of(matcher.group(1));
+		else
+			return Optional.absent();
+	}
+
+	private final static <T> Predicate<Optional<T>> isPresent(Class<T> cls) {
+		return new Predicate<Optional<T>>() {
+
+			@Override
+			public boolean apply(Optional<T> input) {
+				return input.isPresent();
+			}
+		};
+	}
 
 	private final static Function<String, Optional<Definition>> toDefinition = new Function<String, Optional<Definition>>() {
 
@@ -47,13 +92,15 @@ public class Generator {
 		}
 	};
 
-	private final static Function<Optional<Definition>, Definition> getDefinition = new Function<Optional<Definition>, Definition>() {
+	private <T> Function<Optional<T>, T> get(Class<T> cls) {
+		return new Function<Optional<T>, T>() {
 
-		@Override
-		public Definition apply(Optional<Definition> def) {
-			return def.get();
-		}
-	};
+			@Override
+			public T apply(Optional<T> def) {
+				return def.get();
+			}
+		};
+	}
 
 	static class Definition {
 		String name;
@@ -72,24 +119,6 @@ public class Generator {
 
 	}
 
-	public String generate(InputStream is) {
-		try {
-			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-			PrintStream out = new PrintStream(bytes);
-			List<String> lines = CharStreams
-					.readLines(new InputStreamReader(is));
-			ImmutableList<Definition> definitions = FluentIterable.from(lines)
-					.filter(nonEmptyLines).transform(toDefinition)
-					.filter(isPresent).transform(getDefinition).toList();
-			System.out.println(definitions);
-			String className = "Cls";
-			writeClass(out, className, definitions);
-			return bytes.toString();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	private void writeClass(PrintStream out, String className,
 			ImmutableList<Definition> defs) {
 		String indent = "    ";
@@ -103,7 +132,7 @@ public class Generator {
 
 		out.println();
 
-		out.print(indent + className + "(");
+		out.print(indent + "private " + className + "(");
 		{
 			boolean firstTime = true;
 			for (Definition def : defs) {

@@ -1,2 +1,6 @@
+public class Fred {
+
 private String name;
 private int count;
+
+}
