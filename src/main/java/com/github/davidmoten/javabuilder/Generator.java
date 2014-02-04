@@ -217,6 +217,9 @@ public class Generator {
 
 	@VisibleForTesting
 	static Optional<Definition> parse(String line) {
+		Pattern p = Pattern.compile("\\bclass\\b");
+		if (p.matcher(line).find())
+			return Optional.absent();
 		for (String word : reservedWords)
 			line = line.replaceAll("\\b" + word + "\\b", "");
 		line = line.replace(";", "");

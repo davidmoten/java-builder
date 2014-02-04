@@ -1,6 +1,7 @@
 package com.github.davidmoten.javabuilder;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -36,8 +37,12 @@ public class GeneratorTest {
 
 	@Test
 	public void testParseClassName() {
-
 		assertEquals("Fred",
 				Generator.parseClassName("public static class Fred {").get());
+	}
+
+	@Test
+	public void testDefinitionParserIgnoresClassDefinitions() {
+		assertFalse(Generator.parse("public class Fred {").isPresent());
 	}
 }
