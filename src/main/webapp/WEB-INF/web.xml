@@ -3,7 +3,7 @@
 	version="2.5">
 
 	<servlet>
-		<servlet-name>Generator</servlet-name>
+		<servlet-name>Builder</servlet-name>
 		<servlet-class>com.github.davidmoten.javabuilder.BuilderServlet</servlet-class>
 	</servlet>
 
