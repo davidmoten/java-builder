@@ -1,0 +1,27 @@
+    private TheClass(String name) {
+        this.name = name;
+    }
+    
+    public String getName(){
+        return name;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private String name;
+
+        private Builder() {
+        }
+        
+        public Builder name(String value) {
+            this.name = value;
+            return this;
+        }
+        
+        
+    }
+    
