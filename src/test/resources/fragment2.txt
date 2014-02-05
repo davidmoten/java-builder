@@ -1,0 +1,9 @@
+private static class P1File {
+String fromCountry,
+			String fromAdministrationDomainName, String fromPrivateDomainName,
+			String fromOrganizationName, String fromGivenName,
+			String fromSurname, String[] fromOrganizationalUnitNames,
+			String toCountry, String toAdministrationDomainName,
+			String toPrivateDomainName, String toOrganizationName,
+			String toGivenName, String toSurname,
+			String[] toOrganizationalUnitNames, String subject, String data

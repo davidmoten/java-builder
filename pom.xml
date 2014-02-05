@@ -19,6 +19,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.target>1.6</maven.compiler.target>
 		<guava.version>16.0</guava.version>
+		<jetty.plugin.version>8.1.12.v20130726</jetty.plugin.version>
+		<jetty.stop.port>9998</jetty.stop.port>
 	</properties>
 
 	<licenses>
@@ -61,7 +63,7 @@
 	</scm>
 
 	<dependencies>
-		
+
 		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -91,6 +93,19 @@
 				<configuration>
 					<source>${maven.compiler.target}</source>
 					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty.plugin.version}</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<stopKey>foo</stopKey>
+					<stopPort>9998</stopPort>
+					<webAppConfig>
+						<contextPath>/</contextPath>
+					</webAppConfig>
 				</configuration>
 			</plugin>
 		</plugins>

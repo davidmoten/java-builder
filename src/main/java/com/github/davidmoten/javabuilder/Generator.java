@@ -88,7 +88,7 @@ public class Generator {
 
 		@Override
 		public Optional<Definition> apply(String line) {
-			return parse(line);
+			return parseDefinition(line);
 		}
 	};
 
@@ -187,6 +187,7 @@ public class Generator {
 					+ def.type + sp + def.name + ") {");
 			out.println(indent + indent + indent + "this." + def.name + " = "
 					+ def.name + sc);
+			out.println(indent + indent + indent + "return this;");
 			out.println(indent + indent + "}");
 			out.println();
 		}
@@ -216,13 +217,20 @@ public class Generator {
 	}
 
 	@VisibleForTesting
-	static Optional<Definition> parse(String line) {
+	static Optional<Definition> parseDefinition(String line) {
+
+		// ignore if class definition
 		Pattern p = Pattern.compile("\\bclass\\b");
 		if (p.matcher(line).find())
 			return Optional.absent();
+
+		// remove reserved words
 		for (String word : reservedWords)
 			line = line.replaceAll("\\b" + word + "\\b", "");
 		line = line.replace(";", "");
+
+		// allow for builder to be made from a list of parameters
+		// line = line.replace(",", "\n");
 		line = line.trim();
 		Pattern pattern = Pattern
 				.compile("^([^=]*)(?:\\s+)(\\b[^=]+\\b).*(=.*)?$");
