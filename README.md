@@ -7,7 +7,7 @@ Do it online at http://java-builder.xuml-tools.cloudbees.net/.
 
 Run locally
 --------------
-```
+```bash
 git clone https://github.com/davidmoten/java-builder.git
 cd java-builder
 mvn jetty:run
@@ -25,7 +25,7 @@ private String name;
 private int count;
 ```
 to this:
-```
+```java
     private final String name;
     private final int count;
 
