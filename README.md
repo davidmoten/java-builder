@@ -69,4 +69,8 @@ to this:
         }
     }
 ```
+Known limitations
+----------------------
+
+javadoc and annotations might confuse it as would comma separated field declarations.
 
