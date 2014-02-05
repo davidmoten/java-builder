@@ -6,7 +6,7 @@ Generate java builder pattern from a list of variable declarations
 Do it online at http://java-builder.xuml-tools.cloudbees.net/.
 
 Run locally
-=============
+--------------
 ```
 git clone https://github.com/davidmoten/java-builder.git
 cd java-builder
@@ -16,7 +16,7 @@ mvn jetty:run
 Then go to http://localhost:8080.
 
 Example
-=========
+------------
 Converts this java fragment:
 ```java
 public class Fred {
