@@ -13,7 +13,7 @@ cd java-builder
 mvn jetty:run
 ```
 
-Then go to http://localhost:8080.
+Then go to [http://localhost:8080](http://localhost:8080).
 
 Example
 ------------
