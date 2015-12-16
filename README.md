@@ -3,7 +3,7 @@ java-builder
 
 Generate java builder pattern from a list of variable declarations
 
-Do it online at http://java-builder.herokuapp.com/builder.
+Do it online at https://java-builder.herokuapp.com/builder.
 
 Run locally
 --------------
